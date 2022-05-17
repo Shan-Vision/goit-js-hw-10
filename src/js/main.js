@@ -27,6 +27,7 @@ function onInputCountryName() {
   }
 
   function dataChecking(data) {
+    console.log(data);
     if (data.length > 10) {
       Notify.info('Too many matches found. Please enter a more specific name.');
       return;
@@ -35,6 +36,8 @@ function onInputCountryName() {
     listOfCountriesMarkUp(data);
   }
   function listOfCountriesMarkUp(data) {
+    console.log(data);
+
     const countryFilter = data
       .map(({ flags: { svg }, name: { official } }) => {
         return `<li><img src="${svg}" alt="${official}" width="50" height="50"/>${official}</li>`;
@@ -42,16 +45,19 @@ function onInputCountryName() {
       .join('');
 
     if (data.length === 1) {
-      const languages = Object.values(data[0].languages).join(', ');
+      const languages = Object.values(data[0].languages);
+      const currency = Object.values(data[0].currencies);
+      const valute = currency[0].name;
+
       const countyInfoMarkup = `<ul>
         <li>Capital: ${data[0].capital}</li>
         <li>Population: ${data[0].population}</li>
         <li>Languages: ${languages}</li>
+        <li>Currency: ${valute}</li>
         </ul>`;
 
-     refs.info.insertAdjacentHTML('afterbegin', countyInfoMarkup);
+      refs.info.insertAdjacentHTML('afterbegin', countyInfoMarkup);
     }
     return refs.list.insertAdjacentHTML('afterbegin', countryFilter);
   }
 }
-
